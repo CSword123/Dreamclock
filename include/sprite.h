@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+// struct to hold properties for a sprite
 typedef struct Sprite
 {
     Texture2D texture;

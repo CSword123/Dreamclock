@@ -1,3 +1,6 @@
+// Name: Dreamclock
+// Author: Hector E (BluesRedSun)
+// Date: 1-4-2025
 #include <raylib.h>
 #include "./include/config.h"
 #include "./include/logic.h"
@@ -25,4 +28,3 @@ int main()
     CloseWindow();
     return 0;
 }
-//

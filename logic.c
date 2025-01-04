@@ -5,21 +5,25 @@
 #include <raylib.h>
 #include <time.h>
 
-void updateCurrentTime(short* sec)
+void updateCurrentTime(short* hour, short* min, short* sec)
 {
     // Get the current system time
     time_t now = time(NULL);
     struct tm* local = localtime(&now);
-    // Syncronize the second hand rotation to the system time
+    // Syncronize the hand rotation to the system time
+    *hour = (short) local->tm_hour;
+    *min = (short) local->tm_min;
     *sec = (short) local->tm_sec;
 }
 
 // void processInput();
 void update(Sprite* faceSpr, Sprite* handSpr)
 {
-    short seconds = 0;
-    updateCurrentTime(&seconds);
+    short hours = 0, minutes = 0, seconds = 0;
+    updateCurrentTime(&hours, &minutes, &seconds);
     // rotate seconds hand in sync with frame timing
+    handSpr[0].rotation = (float) hours * 30.0f;
+    handSpr[1].rotation = (float) minutes * 6.0f;
     handSpr[2].rotation = (float) seconds * 6.0f;
 }
 void render(Sprite* faceSpr, Sprite* handSpr)
@@ -31,7 +35,6 @@ void render(Sprite* faceSpr, Sprite* handSpr)
         {
             drawRotatedHandSprite(&handSpr[i]);
         }
-        drawRotatedHandSprite(handSpr);
         DrawFPS(10, 10);
     EndDrawing();
 
