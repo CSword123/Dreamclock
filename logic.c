@@ -2,8 +2,26 @@
 #include "./include/logic.h"
 #include "./include/sprite.h"
 #include "./include/config.h"
+#include "./include/sound.h"
 #include <raylib.h>
 #include <time.h>
+
+bool isSoundToggleOn = false;
+
+void updateKeyboard(void)
+{
+    bool isSKeyPressed = false;
+    isSKeyPressed = IsKeyPressed(KEY_S);
+    if (isSKeyPressed)
+        isSoundToggleOn = !isSoundToggleOn;
+}
+void updateController(void)
+{
+    bool isAButPressed = false;
+    isAButPressed = IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN);
+    if (isAButPressed && !isSoundToggleOn)
+        isSoundToggleOn = !isSoundToggleOn;
+}
 
 void updateCurrentTime(short* hour, short* min, short* sec)
 {
@@ -14,28 +32,4 @@ void updateCurrentTime(short* hour, short* min, short* sec)
     *hour = (short) local->tm_hour;
     *min = (short) local->tm_min;
     *sec = (short) local->tm_sec;
-}
-
-// void processInput();
-void update(Sprite* faceSpr, Sprite* handSpr)
-{
-    short hours = 0, minutes = 0, seconds = 0;
-    updateCurrentTime(&hours, &minutes, &seconds);
-    // rotate seconds hand in sync with frame timing
-    handSpr[0].rotation = (float) hours * 30.0f;
-    handSpr[1].rotation = (float) minutes * 6.0f;
-    handSpr[2].rotation = (float) seconds * 6.0f;
-}
-void render(Sprite* faceSpr, Sprite* handSpr)
-{
-    BeginDrawing();
-        ClearBackground(BLUE);
-        drawFaceSprite(faceSpr);
-        for (int i = 0; i < HAND_COUNT; i++)
-        {
-            drawRotatedHandSprite(&handSpr[i]);
-        }
-        DrawFPS(10, 10);
-    EndDrawing();
-
 }
