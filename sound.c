@@ -1,7 +1,6 @@
 #include "./include/sound.h"
 #include <raylib.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 void enableWave(Chime* ch)
 {

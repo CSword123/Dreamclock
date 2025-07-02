@@ -52,31 +52,40 @@ int main(void)
 }
 void processInput(void)
 {
+
     if(IsGamepadAvailable(0))
     {
-        printf("Controller detected.\n");
+        // printf("Controller detected.\n");
         updateController();
     }
     updateKeyboard();
 }
 void update(void)
 {
+    static bool lastToggleState = false;
     static short lastHour = -1;
+    static short lastMinute = -1;
     short hours = 0, minutes = 0, seconds = 0;
     updateCurrentTime(&hours, &minutes, &seconds);
     // rotate hands in sync with system time and play chimes on the hour
-    if (isSoundToggleOn && hours != lastHour)
+    if (isSoundToggleOn && !lastToggleState)
     {
-        if (minutes != 0)
-        {
-            playChime(&ringGetChime);
-        }
-        else
+        playChime(&ringGetChime);
+    }
+    if (isSoundToggleOn)                     // if sound playback is enabled by user and current hours value gets updated
+    {
+        if (hours != lastHour)                                        // hour 00 is midnight, hour 12 is noon
         {
             playChime(&ringLossChime);
         }
-        lastHour = hours;
+        else if (minutes == 30 && lastMinute != minutes)
+        {
+            playChime(&ringGetChime);
+        }
     }
+    lastToggleState = isSoundToggleOn;
+    lastHour = hours;
+    lastMinute = minutes;
     clockHands[0].rotation = (float) hours * 30.0f;
     clockHands[1].rotation = (float) minutes * 6.0f;
     clockHands[2].rotation = (float) seconds * 6.0f;

@@ -2,7 +2,7 @@ TARGET = dreamClock
 
 CC = gcc
 SRC = dreamClock.c sprite.c logic.c sound.c
-CFLAGS = -g -std=c2x -Wall -Werror
+CFLAGS = -std=c23 -Wall -Werror -Wextra -O2
 LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 all:
